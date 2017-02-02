@@ -17,34 +17,44 @@
 		<li><a href="home.php">Home</a></li>
 		<li class="active"><a href="#">Prodotti</a></li>
 		<li><a href="#">Acquisti</a></li>
+		<?php 
+		if(!isset($_SESSION['log']) && !$_SESSION['log']){
+		?>
 		<li><a href="registrazione.php">Registrazione</a></li>
 		<li><a href="login.php">Login</a></li>
+		<?php 
+		}else{
+		?>
+		<li><a href="logout.php">Logout</a></li>
+		<?php
+		}
+		?>
 	  </ul>
-	</div>
-	<div class="container style=text-align:center">
-	  </br>
-	  <h5 class="text-primary">Prodotti disponibili</h5>
 	</div>
 	<?php
 		if(isset($_SESSION['log']) && $_SESSION['log']){
-			?>
-			<div class="container">
-				<h3 class="Text-success">Sei loggato</h3>
-				</br>
-				<form action="logout.php" method="POST">
-					<input type="submit" class="btn btn-success" name="Logout" value="Logout"/>
-				</form>
-			</div>
-			<?php
 			try{
 				$dbh = new PDO('mysql:host=localhost;dbname=quintaa_ecommerce','quintaa','NB7U@91A');
 				$stm = $dbh->prepare('Select idProdotto, NomeProdotto, Costo, Categoria_idCategoria  from prodotto');
-				
-				?>
-				<div class="container">
-					<h5 class="text-primary"></h2>
-				</div>
-				<?php
+				if($stm->execute()){
+					$p = $stm->fetch();
+					$ip = $p['idProdotto'];
+					$n = $p['NomeProdotto'];
+					$c = $p['Costo'];
+					?>
+					<div class="container style=text-align:center">
+						<h1 class="text-primary">Prodotti disponibili:</h1>
+						<?php echo $c; ?>
+					</div>
+					<?php
+				}
+				else{
+					?>
+					<div class="container style=text-align:center">
+						<h3 class="Text-warning">Prodotti non disponibili</h3>
+					</div>
+					<?php
+				}
 			}catch(PDOException $e){
 				echo 'Connection Failed ! ' . $e->getMessage();
 			}

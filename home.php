@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <html>
 <head>
 		<!-- Latest compiled and minified CSS -->
@@ -16,8 +17,18 @@
 		<li class="active"><a href="#">Home</a></li>
 		<li><a href="prodotti.php">Prodotti</a></li>
 		<li><a href="#">Acquisti</a></li>
+		<?php 
+		if(!isset($_SESSION['log']) && !$_SESSION['log']){
+		?>
 		<li><a href="registrazione.php">Registrazione</a></li>
 		<li><a href="login.php">Login</a></li>
+		<?php 
+		}else{
+		?>
+		<li><a href="logout.php">Logout</a></li>
+		<?php
+		}
+		?>
 	  </ul>
 	</div>
 	<div class="container style=text-align:center">
@@ -25,21 +36,5 @@
 	  <h5 class="text-primary">Benvenuti nel nostro sito, per acquistare un prodotto è necessario fare la registrazione ed il login</h5>
 	  <img class="img-responsive" src="e-commerce.png" alt="e-commerce" width="500" height="250"> 
 	</div>
-	<?php
-		if(isset($_SESSION['log']) && $_SESSION['log']){
-			?>
-			<div class="container">
-				<h3 class="Text-success">Sei loggato</h3>
-				</br>
-				<form action="logout.php" method="POST">
-					<input type="submit" class="btn btn-success" name="Logout" value="Logout"/>
-				</form>
-			</div>
-			<?php
-		}
-		else{
-			
-		}
-	?>
 </body>
 </html>

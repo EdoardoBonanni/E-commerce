@@ -17,8 +17,18 @@
 		<li><a href="home.php">Home</a></li>
 		<li><a href="prodotti.php">Prodotti</a></li>
 		<li><a href="#">Acquisti</a></li>
+		<?php 
+		if(!isset($_SESSION['log']) && !$_SESSION['log']){
+		?>
 		<li class="active"><a href="#">Registrazione</a></li>
 		<li><a href="login.php">Login</a></li>
+		<?php 
+		}else{
+		?>
+		<li><a href="logout.php">Logout</a></li>
+		<?php
+		}
+		?>
 	  </ul>
 	</div>
 	<?php
