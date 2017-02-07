@@ -35,18 +35,56 @@
 		if(isset($_SESSION['log']) && $_SESSION['log']){
 			try{
 				$dbh = new PDO('mysql:host=localhost;dbname=quintaa_ecommerce','quintaa','NB7U@91A');
-				$stm = $dbh->prepare('Select idProdotto, NomeProdotto, Costo, Categoria_idCategoria  from prodotto');
+				$stm2 = $dbh->prepare('Select * From categoria');
+				?>
+				<div class="container style=text-align:center">
+					<h2 class="text-primary">Image Gallery</h2>
+					<p>
+					<h5 class="Text-primary">Categorie Disponibili</h5>
+					<form method="get" action="prodotti.php">
+						<select name="select" onchange="this.form.submit();">
+						<option value='0' >Seleziona categoria</option>
+						<?php
+						if($stm2->execute()){
+							while($c = $stm2->fetch()){
+								$ic = $c['idCategoria'];
+								$nc = $c['NomeCategoria'];
+								echo "<option value='$ic' >$nc</option>";
+							}
+						}
+						?>
+						</select>
+					</form>
+					</p>
+				</div>
+				<div class="container">
+				<?php
+				$stm = $dbh->prepare('Select * From prodotto Where Categoria_idcategoria = '. $_GET['select']);
 				if($stm->execute()){
-					$p = $stm->fetch();
-					$ip = $p['idProdotto'];
-					$n = $p['NomeProdotto'];
-					$c = $p['Costo'];
-					?>
-					<div class="container style=text-align:center">
-						<h1 class="text-primary">Prodotti disponibili:</h1>
-						<?php echo $c; ?>
-					</div>
+					while($p = $stm->fetch()){
+						$ip = $p['idProdotto'];
+						$n = $p['NomeProdotto'];
+						$c = $p['Costo'];
+						$i = $p['Immagine'];
+						?>
+						
+							<div class="row">
+								<div class="col-md-4">
+								  <div class="thumbnail">
+									  <img src="<?php echo $i; ?>" alt="<?php echo $n ?>" style="width:100%">
+									  <div class="caption">
+										<p><?php echo 'NomeProdotto: ' . $n;
+										?>
+										</br>
+										<?php
+										echo 'Prezzo: ' . $c; ?></p>
+									  </div>
+								  </div>
+								</div>
+							</div>
+						
 					<?php
+					}
 				}
 				else{
 					?>
@@ -63,5 +101,6 @@
 			header('location:login.php');
 		}
 	?>
+	</div>
 </body>
 </html>
