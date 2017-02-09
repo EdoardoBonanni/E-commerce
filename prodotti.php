@@ -16,7 +16,7 @@
 	  <ul class="nav nav-pills">
 		<li><a href="home.php">Home</a></li>
 		<li class="active"><a href="#">Prodotti</a></li>
-		<li><a href="#">Acquisti</a></li>
+		<li><a href="acquisti.php">Acquisti</a></li>
 		<?php 
 		if(!isset($_SESSION['log']) && !$_SESSION['log']){
 		?>
@@ -67,22 +67,24 @@
 						$c = $p['Costo'];
 						$i = $p['Immagine'];
 						?>
-						
-							<div class="row">
-								<div class="col-md-4">
-								  <div class="thumbnail">
-									  <img src="<?php echo $i; ?>" alt="<?php echo $n ?>" style="width:100%">
-									  <div class="caption">
-										<p><?php echo 'NomeProdotto: ' . $n;
-										?>
-										</br>
-										<?php
-										echo 'Prezzo: ' . $c; ?></p>
-									  </div>
+						<form method="POST">
+							<div class="col-md-4">
+							  <div class="thumbnail">
+								  <input type="hidden" name="idProdottoHidden" value="<?php echo $ip;?>"/>
+								  <input type="hidden" name="NomeProdottoHidden" value="<?php echo $n;?>"/>
+								  <input type="hidden" name="CostoHidden" value="<?php echo $c;?>"/>
+								  <img src="<?php echo $i; ?>" alt="<?php echo $n ?>" style="width:100%">
+								  <div class="caption">
+									<p><?php echo 'NomeProdotto: ' . $n;
+									?>
+									</br>
+									<?php
+									echo 'Prezzo: ' . $c; echo '&#8364' ?> </p>
 								  </div>
-								</div>
+								  <input type="submit" class="btn btn-info" name="Acquista" value="Acquista"/>
+							  </div>
 							</div>
-						
+						</form>
 					<?php
 					}
 				}
@@ -92,6 +94,11 @@
 						<h3 class="Text-warning">Prodotti non disponibili</h3>
 					</div>
 					<?php
+				}
+				if(isset($_POST['Acquista'])){
+						$row = array($_POST['idProdottoHidden'], $_POST['NomeProdottoHidden'], $_POST['CostoHidden']);
+						array_push($_SESSION['carrello'], $row);
+						header('location:acquisti.php');
 				}
 			}catch(PDOException $e){
 				echo 'Connection Failed ! ' . $e->getMessage();

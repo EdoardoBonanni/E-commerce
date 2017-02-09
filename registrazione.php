@@ -16,7 +16,7 @@
 	  <ul class="nav nav-pills">
 		<li><a href="home.php">Home</a></li>
 		<li><a href="prodotti.php">Prodotti</a></li>
-		<li><a href="#">Acquisti</a></li>
+		<li><a href="acquisti.php">Acquisti</a></li>
 		<?php 
 		if(!isset($_SESSION['log']) && !$_SESSION['log']){
 		?>
